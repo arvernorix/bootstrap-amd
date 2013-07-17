@@ -123,10 +123,10 @@ function createPackageJson() {
  */
 function convert( fileName, contents ) {
 
-    var moduleName, outFileName, i, segment,
+    var outFileName,
         fileParts = fileName.split( '-' ),
-        files = getDependencies( fileName ),
-        tempDir = inDir;
+        tempDir,
+        files;
 
     //Remove 'bootstrap' prefix from the files,
     //generate module name.
@@ -136,14 +136,11 @@ function convert( fileName, contents ) {
         outFileName = fileName;
     };
 
-    //Make sure directories exist in the bootstrap section.
-    if ( moduleName !== 'bootstrap' && fileParts.length > 1 ) {
-        mkDir( inDir + 'amd/' );
-        for ( i = 0; i < fileParts.length - 1; i++ ) {
-            tempDir = inDir + 'amd/src/';
-            mkDir( tempDir );
-        };
-    };
+    mkDir( inDir + 'amd/' );
+    tempDir = inDir + 'amd/src/';
+    mkDir( tempDir );
+
+    files = getDependencies( outFileName );
 
     contents = 'define(' +
         '[ ' + files.join(',') + ' ], function ( jQuery ) {\n' +
@@ -158,18 +155,18 @@ function getDependencies( fileName ) {
 
     if ( optionKey !== '--no-transition' ) {
         switch ( fileName ) {
-            case 'bootstrap-transition.js':
+            case 'transition.js':
                 deps = [ "'jquery'" ];
                 break;
-            case 'bootstrap-popover.js':
+            case 'popover.js':
                 deps = [ "'jquery', './tooltip', './transition'" ];
                 break;
             default:
                 deps = [ "'jquery', './transition'" ];
                 break;
-        };        
+        };
     } else {
-        fileName === 'bootstrap-popover.js' ?
+        fileName === 'popover.js' ?
             deps = [ "'jquery', './tooltip'" ] : deps = [ "'jquery'" ];
     };
 

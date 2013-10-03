@@ -16,6 +16,8 @@
   "bin": {
     "bootstrap-amd": "./bootstrap-amd.js"
   },
+  "dependencies": {
+  },
   "engines": {
     "node": ">=0.6.0"
   }
